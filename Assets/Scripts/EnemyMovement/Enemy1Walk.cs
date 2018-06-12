@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer), typeof(Animator), typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Enemy1Walk : MonoBehaviour
 {
     Animator enemyAnimator1; //Used to store the animator component
@@ -22,6 +22,9 @@ public class Enemy1Walk : MonoBehaviour
     SpriteRenderer spriteRenderer; //stores the sprite renderer
 
     [SerializeField]
+    float movementSpeedEnemy = 3f; //enemy movement speed multiplier
+
+    [SerializeField]
     GameObject player; // stores the player game object
 
     [SerializeField]
@@ -29,11 +32,17 @@ public class Enemy1Walk : MonoBehaviour
 
     float distanceMagnitude;
 
+    void Awake()
+    {
+        enemyAnimator1 = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rigB2DEnemy = GetComponent<Rigidbody2D>();
+    }
+
     // Use this for initialization
     void Start()
     {
-        enemyAnimator1.GetComponent<Animator>();
-        spriteRenderer.GetComponent<SpriteRenderer>();
+        
     }
 
     // Update is called once per frame
@@ -45,21 +54,19 @@ public class Enemy1Walk : MonoBehaviour
     void Movement()
     {
 
-        currentPosition = new Vector2(transform.position.x,transform.position.y);
+        currentPosition = new Vector2(transform.position.x,transform.position.y); // used to calculate magnitude
         playersPosition = player.transform.position;
+        rigB2DEnemy.velocity = movementSpeedEnemy * playersPosition; 
 
-        distanceFromPlayerToEnemy = playersPosition - currentPosition;
-        distanceMagnitude = distanceFromPlayerToEnemy.magnitude;
-
-        if(distanceMagnitude < 0)
+        if(currentPosition.x < 0)
         {
-            spriteRenderer.flipX = true;
-            enemyAnimator1.SetFloat("Speed", distanceMagnitude); // sets the speed parameter for the animator to either set it to idle or walk.
+            spriteRenderer.flipX = true; // if less than zero, then set flipX to true thus showing left walk.
+            
         }
-        else
+        else if (currentPosition.x > 0)
         {
-            spriteRenderer.flipX = false; // if
-            enemyAnimator1.SetFloat("Speed", distanceMagnitude); // sets the speed parameter for the animator to either set it to idle or walk.
+            spriteRenderer.flipX = false; // if zero or greater than zero, then set flipX to false thus showing right walk.
+            
         }
         //playersPosition = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical")); //sets the current position to the current player's input
         //player2Position = newVector2(Input.GetAxis("P2Horizontal"),Input.GetAxis("P2Vertical"));
