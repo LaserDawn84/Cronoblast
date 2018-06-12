@@ -23,8 +23,12 @@ public class CharacterMovement : MonoBehaviour {
 
     Vector3 aimInput = Vector3.zero; // for aiming the gun
 
-     SpriteRenderer spriteRenderer; // sprite renderer for the player
-     
+    SpriteRenderer spriteRenderer; // sprite renderer for the player
+
+    [SerializeField]
+    GameObject bullet;
+
+    GameObject bulletClone;
 
     [SerializeField]
     float movementSpeed = 4f; //multiplier for the player's speed
@@ -52,7 +56,34 @@ public class CharacterMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Movement();
+        Shoot();
 	}
+
+    void Shoot()
+    {
+        aimInput = new Vector3(Input.GetAxis("RStickHorizontalP1"), Input.GetAxis("RStickVerticalP1"), 0f);
+        mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (isUsingMouse == true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                bulletClone = Instantiate(bullet, gun.transform.position, Quaternion.Euler(gun.transform.up));
+                bulletClone.GetComponent<Rigidbody2D>().AddForce((mouseInput - bulletClone.transform.position).normalized * movementSpeed, ForceMode2D.Impulse);
+            }
+        }
+        else
+        {
+            if (Input.GetAxis("RTP1") >= 0.8f)
+            {
+                bulletClone = Instantiate(bullet,gun.transform.position,Quaternion.Euler(gun.transform.up));
+                bulletClone.GetComponent<Rigidbody2D>().AddForce((aimInput-bulletClone.transform.position).normalized * movementSpeed, ForceMode2D.Impulse);
+            }
+        }
+
+        
+    }
+
+
 
     void Movement()
     {
