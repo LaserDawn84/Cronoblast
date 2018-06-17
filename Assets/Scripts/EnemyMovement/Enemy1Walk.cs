@@ -10,7 +10,6 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Enemy1Walk : MonoBehaviour
 {
-    Animator enemyAnimator1; //Used to store the animator component
     Vector2 currentPosition; //A vector 2 to store current position
                              // Vector2 player2Position; //Will Sort this out if time to add multiplayer is sufficient
                          
@@ -34,7 +33,6 @@ public class Enemy1Walk : MonoBehaviour
 
     void Awake()
     {
-        enemyAnimator1 = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigB2DEnemy = GetComponent<Rigidbody2D>();
     }

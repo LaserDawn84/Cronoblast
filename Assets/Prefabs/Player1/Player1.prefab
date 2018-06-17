@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4605426963918682}
   - component: {fileID: 212854175159297314}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 50888369016710732}
   - component: {fileID: 61196413262322710}
   - component: {fileID: 114949438637489686}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUsingMouse: 0
+  bullet: {fileID: 1002076932129960, guid: d562b4be3224d524cb75b6fd631fc3c7, type: 2}
   movementSpeed: 4
   gun: {fileID: 1458514733547248}
 --- !u!212 &212711999470406518
