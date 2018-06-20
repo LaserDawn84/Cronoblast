@@ -13,14 +13,14 @@ public class Enemy1Walk : MonoBehaviour
 
     bool isCoOp = false;     // check will be used if I add local multiplayer (Co-Op Single Screen).
 
-    //Collaped (Press the + to Uncollapse)
+    //Collaped (Press the + to Expand)
     #region Position_Vectors
     Vector2 currentPosition; //A vector 2 to store current position
     Vector2 player2Position; //Will Sort this out if time to add multiplayer is sufficient             
     Vector2 player1Position; // Store the player's position. Will be using this with 'currentPosition' to calculate the direction in which the enemy must move.
     #endregion
 
-    //Collaped (Press the + to Uncollapse)
+    //Collaped (Press the + to Expand)
     #region Enemy_Stats
     [SerializeField]
     float movementSpeedEnemy = 3f; //enemy movement speed multiplier
@@ -30,7 +30,7 @@ public class Enemy1Walk : MonoBehaviour
     public int enemyPower = 100; //Power Resource Pool for the Enemy
     #endregion
 
-    //Collaped (Press the + to Uncollapse)
+    //Collaped (Press the + to Expand)
     #region Objects_And_Components
     Rigidbody2D rigB2DEnemy; //stores the rigidbody for the enemy
 

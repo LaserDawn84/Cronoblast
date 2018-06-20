@@ -15,7 +15,7 @@ public class CharacterMovement : MonoBehaviour
 
     public bool isUsingMouse = false; // checks if the mouse is being used as the input.
 
-    //Collapsed (Press the + Button to Uncollapse)
+    //Collapsed (Press the + Button to Expand)
     #region Input_Vectors (Contains All Input Vector Variables) 
     Vector3 keyboardMovementInput = Vector3.zero; // for keyboard walk
     Vector3 mouseInput = Vector3.zero; // for aiming the gun with the mouse
@@ -27,7 +27,7 @@ public class CharacterMovement : MonoBehaviour
     Vector3 aimInputGamepad2 = Vector3.zero; // for aiming the gun with gamepad 2
     #endregion
 
-    //Collapsed (Press the + Button to Uncollapse)
+    //Collapsed (Press the + Button to Expand)
     #region Player_Stat_Variables
     public int powerResourceValue = 100; // the amount of power the player has to begin with
     public int playerHealth = 1000; // the amount of health the player has. will be displayed as a percentage on the UI/HUD
@@ -43,7 +43,7 @@ public class CharacterMovement : MonoBehaviour
     float movementSpeed = 4f; //multiplier for the player's speed
     #endregion
 
-    //Collapsed (Press the + Button to Uncollapse)
+    //Collapsed (Press the + Button to Expand)
     #region Objects_And_Components
     SpriteRenderer spriteRenderer; // stores the sprite renderer for the player
 
@@ -55,6 +55,13 @@ public class CharacterMovement : MonoBehaviour
     GameObject gun; // stores the informaton for the gun gameobject.
 
     Rigidbody2D rigB2D;// players rigidbody container
+    #endregion
+
+    //Collapsed (Press the + Button to Expand)
+    #region Active_Power_Checks
+    public bool isShieldActive = false;
+    public bool isExplosionActive = false;
+    public bool isTracerRoundActive = false;
     #endregion
 
 
