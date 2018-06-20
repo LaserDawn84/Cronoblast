@@ -15,6 +15,8 @@ public class CharacterMovement : MonoBehaviour
 
     public bool isUsingMouse = false; // checks if the mouse is being used as the input.
 
+    //Collapsed (Press the + Button to Uncollapse)
+    #region Input_Vectors (Contains All Input Vector Variables) 
     Vector3 keyboardMovementInput = Vector3.zero; // for keyboard walk
     Vector3 mouseInput = Vector3.zero; // for aiming the gun with the mouse
     Vector3 previousMousePosition = Vector3.zero; //
@@ -23,17 +25,26 @@ public class CharacterMovement : MonoBehaviour
 
     Vector3 aimInputGamepad1 = Vector3.zero; // for aiming the gun with gamepad 1
     Vector3 aimInputGamepad2 = Vector3.zero; // for aiming the gun with gamepad 2
+    #endregion
+
+    //Collapsed (Press the + Button to Uncollapse)
+    #region Player_Stat_Variables
+    public int powerResourceValue = 100; // the amount of power the player has to begin with
+    public int playerHealth = 1000; // the amount of health the player has. will be displayed as a percentage on the UI/HUD
 
     [SerializeField]
-    int powerResourceValue = 100; // the amount of power the player has to begin with
+    int enemiesKilled = 0; //This stores the amount of enemies killed and will be used to dictate which wave the player is on, to then generate harder enemies or more enemies.
 
-    [SerializeField]
-    int playerHealth = 1000; // the amount of health the player has. will be displayed as a percentage on the UI/HUD
-
-    int enemiesKilled = 0; //This will be used to dictate which wave the player is on, to then generate harder enemies or more enemies.
     public int waveNumber = 1; // sets the round number defaulted to wave 1.
+
     public int difficultyMultiplier { get; private set; } //this is used in tandem with 'enemiesKilled' to dictate the health stats of enemies as waves progress. It will be accessed by the enemy script and used to add to their health. 
 
+    [SerializeField]
+    float movementSpeed = 4f; //multiplier for the player's speed
+    #endregion
+
+    //Collapsed (Press the + Button to Uncollapse)
+    #region Objects_And_Components
     SpriteRenderer spriteRenderer; // stores the sprite renderer for the player
 
     [SerializeField]
@@ -41,22 +52,25 @@ public class CharacterMovement : MonoBehaviour
     GameObject bulletClone; //used to store the information of the instantiated bullet prefab
 
     [SerializeField]
-    float movementSpeed = 4f; //multiplier for the player's speed
-
-    Rigidbody2D rigB2D;// players rigidbody container
-
-    [SerializeField]
     GameObject gun; // stores the informaton for the gun gameobject.
 
+    Rigidbody2D rigB2D;// players rigidbody container
+    #endregion
+
+
+
+
+    /*********************AWAKE*********************************/
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>(); // stores the attached spriterenderer information.
         rigB2D = GetComponent<Rigidbody2D>(); // stores the attached rigidbody information
         difficultyMultiplier = 1; // defaults the multiplier to x1
     }
+    /*********************END AWAKE*********************************/
 
 
-
+    /*********************START*********************************/
     // Use this for initialization
     void Start()
     {
@@ -64,7 +78,10 @@ public class CharacterMovement : MonoBehaviour
 
 
     }
+    /*********************END START*********************************/
 
+
+    /*********************UPDATE*********************************/
     // Update is called once per frame
     void Update()
     {
@@ -74,7 +91,10 @@ public class CharacterMovement : MonoBehaviour
         ShootChecker();// calls the ShootChecker Function which checks if input is supplied.
         
     }
+    /*********************END UPDATE*********************************/
 
+
+    /*********************SHOOT CHECKER*********************************/
     void ShootChecker()
     {
         if (isUsingMouse == true)
@@ -83,6 +103,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 Shoot(mouseInput); // calls shoot function and passes the current mouse position.
             }
+            
         }
         else
         {
@@ -94,19 +115,28 @@ public class CharacterMovement : MonoBehaviour
 
 
     }
+    /*********************END SHOOT CHECK*********************************/
 
+
+    /*********************SHOOT*********************************/
     void Shoot(Vector3 inputs)
     {
         bulletClone = Instantiate(bullet, gun.transform.position, gun.transform.rotation, gameObject.transform);// spawns a bullet and sets it as a child of the player.
-        bulletClone.GetComponent<Rigidbody2D>().AddForce((inputs - bulletClone.transform.position).normalized * movementSpeed, ForceMode2D.Impulse); // applies force to the bullet in the direction of the aim input.
+        bulletClone.GetComponent<Rigidbody2D>().AddForce(inputs.normalized * 15f, ForceMode2D.Impulse); // applies force to the bullet in the direction of the aim input.
 
     }
+    /*********************END SHOOT*********************************/
 
+
+    /*********************AIM WITH GAMEPAD (XBOX CONTROLLER)*********************************/
     void AimWithGamepad()
     {
         aimInputGamepad1 = new Vector3(Input.GetAxis("RStickHorizontalP1"), Input.GetAxis("RStickVerticalP1"), 0f); //sets aim input to the current axes of the right stick on gamepad 1. (can be player 1 or 2)
     }
+    /*********************END AIM WITH GAMEPAD (XBOX CONTROLLER)*********************************/
 
+
+    /*********************AIM WITH MOUSE*********************************/
     void AimWithMouse()
     {
         mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition); //sets mouseInput to the current mouse position and uses the camera to convert it to world points. (can be player 1 or 2)
@@ -118,14 +148,17 @@ public class CharacterMovement : MonoBehaviour
 
         if (mouseInput == previousMousePosition)
         {
-            isUsingMouse = false;// if mouse position is equal to the starting positon of the mouse then player is not using the mouse
+            isUsingMouse = false;
+            // if mouse position is equal to the starting positon of the mouse then player is not using the mouse
             // this is really bad as there will be a position that will cause issues when playing potentially freezing the aim
             //if the user uses that position anytime during gameplay
             //I will be using a settings file anyway so this is only temporary.
         }
     }
+    /*********************END AIM WITH MOUSE*********************************/
 
 
+    /*********************MOVEMENT*********************************/
     void Movement()
     {
         keyboardMovementInput = new Vector3(Input.GetAxis("KeyboardHorizontal"), Input.GetAxis("KeyboardVertical"), 0f); // sets the vector to the current x and y axes supplied by the keyboard
@@ -134,7 +167,7 @@ public class CharacterMovement : MonoBehaviour
         {
             if (isUsingMouse == true)
             {
-                rigB2D.velocity = movementSpeed * keyboardMovementInput;
+                rigB2D.velocity = movementSpeed * keyboardMovementInput; // sets movement velocity
                 if (mouseInput.magnitude != 0f)
                 {
                     Vector3 tempVector = new Vector3(mouseInput.x, mouseInput.y, 0f);//zeroes out the Z axis for aiming with the mouse.
@@ -173,4 +206,5 @@ public class CharacterMovement : MonoBehaviour
             }
         }
     }
+    /*********************END MOVEMENT*********************************/
 }
