@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4323627957091258}
   - component: {fileID: 212521006234425282}
   - component: {fileID: 95952552042896436}
+  - component: {fileID: 114006003973607796}
   - component: {fileID: 50178407856467286}
   - component: {fileID: 58969147595235662}
   m_Layer: 9
@@ -96,6 +97,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114006003973607796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1002076932129960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b47195e6879adef4cbe8d16d5e333f20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletDestructionEffect: {fileID: 1228595605512392, guid: 5bce32d90a608f942a922fb3fde7d2f9,
+    type: 2}
 --- !u!212 &212521006234425282
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -129,7 +143,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1584361863
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ec91827e1d727f14c98d853056e05e7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -54,6 +54,10 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     GameObject gun; // stores the informaton for the gun gameobject.
 
+    [SerializeField]
+    GameObject shield;
+    GameObject shieldCopy;
+
     Rigidbody2D rigB2D;// players rigidbody container
     #endregion
 
@@ -96,7 +100,7 @@ public class CharacterMovement : MonoBehaviour
         AimWithGamepad(); // sets the input vectors related to the gamepad 'aimInput'
         AimWithMouse(); // sets the input vectors related to the mouse 'mouseInput'
         ShootChecker();// calls the ShootChecker Function which checks if input is supplied.
-        
+        TurnOnShieldCheck(); // calls the turn on shield check
     }
     /*********************END UPDATE*********************************/
 
@@ -106,7 +110,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (isUsingMouse == true)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
             {
                 Shoot(mouseInput); // calls shoot function and passes the current mouse position.
             }
@@ -133,7 +137,7 @@ public class CharacterMovement : MonoBehaviour
     void Shoot(Vector3 inputs)
     {
         bulletClone = Instantiate(bullet, gun.transform.position, gun.transform.rotation, gameObject.transform);// spawns a bullet and sets it as a child of the player.
-        bulletClone.GetComponent<Rigidbody2D>().AddForce(inputs.normalized * 15f, ForceMode2D.Impulse); // applies force to the bullet in the direction of the aim input.
+        bulletClone.GetComponent<Rigidbody2D>().AddForce(inputs.normalized * 20f, ForceMode2D.Impulse); // applies force to the bullet in the direction of the aim input.
 
     }
     /*********************END SHOOT*********************************/
@@ -219,10 +223,22 @@ public class CharacterMovement : MonoBehaviour
     }
     /*********************END MOVEMENT*********************************/
 
-    /*********************SHIELD*********************************/
+    /*********************SHIELD CHECK*********************************/
     void TurnOnShieldCheck()
     {
-        
+        if (Input.GetButtonDown("ShieldActivator") || Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            if(powerResourceValue != 0 || powerResourceValue > 0)
+            {
+                if (isShieldActive == false)
+                {
+                    shieldCopy = Instantiate(shield, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                    isShieldActive = true;
+                    
+                }
+            }  
+        }
     }
+    /*********************END SHIELD CHECK*********************************/
 
 }

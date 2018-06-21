@@ -26,21 +26,18 @@ public class PlayerShield : MonoBehaviour {
     //Awake is used to load and store component references
     void Awake()
     {
-        if (playerMovementScript.GetComponent<CharacterMovement>().isShieldActive == false)
-        {
-            gameObject.SetActive(false);
-        }
+        
     }
 
     // Use this for initialization
     void Start () {
-        if(playerMovementScript != null)
+        if (playerMovementScript != null)
         {
-            playerMovementScript.GetComponent<CharacterMovement>().isShieldActive = true; // when this starts the isShieldActive boolean is set to true, stopping duped shields
             playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue = playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue - powerCost; //sets the player's power resource to the new value. (current - cost)
+            Debug.Log(playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue);
         }
-		
-	}
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
