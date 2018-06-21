@@ -114,9 +114,13 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            if (Input.GetAxis("RTP1") > 1f)
+            if (Input.GetAxis("RTP1") == 1f)
             {
-                Shoot(aimInputGamepad1); // calls shoot function and passes the current gamepad 1 right stick axis inputs.
+                if(aimInputGamepad1 != Vector3.zero)
+                {
+                    Shoot(aimInputGamepad1); // calls shoot function and passes the current gamepad 1 right stick axis inputs.
+                }
+                
             }
         }
 
@@ -214,4 +218,11 @@ public class CharacterMovement : MonoBehaviour
         }
     }
     /*********************END MOVEMENT*********************************/
+
+    /*********************SHIELD*********************************/
+    void TurnOnShieldCheck()
+    {
+        
+    }
+
 }

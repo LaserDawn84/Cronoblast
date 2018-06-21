@@ -18,7 +18,7 @@ TagManager:
   - 
   - Player
   - PlayerBullet
-  - 
+  - PlayerShield
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Gun
     uniqueID: 865610939
+    locked: 0
+  - name: Shield
+    uniqueID: 1895336969
     locked: 0
   - name: Bullets
     uniqueID: 2710605433

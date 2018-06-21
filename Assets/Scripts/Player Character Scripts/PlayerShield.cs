@@ -6,8 +6,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerShield : MonoBehaviour {
 
 
@@ -23,11 +21,15 @@ public class PlayerShield : MonoBehaviour {
         GameObject playerMovementScript; //Player's MovementScript
     #endregion
 
+    bool isActive;
 
     //Awake is used to load and store component references
     void Awake()
     {
-        
+        if (playerMovementScript.GetComponent<CharacterMovement>().isShieldActive == false)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     // Use this for initialization
@@ -36,7 +38,6 @@ public class PlayerShield : MonoBehaviour {
         {
             playerMovementScript.GetComponent<CharacterMovement>().isShieldActive = true; // when this starts the isShieldActive boolean is set to true, stopping duped shields
             playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue = playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue - powerCost; //sets the player's power resource to the new value. (current - cost)
-
         }
 		
 	}
