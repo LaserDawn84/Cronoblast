@@ -10,9 +10,6 @@ public class Spawner : MonoBehaviour {
     [SerializeField]
     GameObject[] enemyArray; // stores enemy types
 
-    
-
- 
     void Awake()
     {
         

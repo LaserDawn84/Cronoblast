@@ -129,8 +129,8 @@ public class Enemy1Walk : MonoBehaviour
     {
         if (enemyHealth <= 0)
         {
-            player1.GetComponent<CharacterMovement>().points += 10;
-            player1.GetComponent<CharacterMovement>().enemiesKilled += 1;
+            CharacterMovement.points += 10;
+            CharacterMovement.enemiesKilled += 1;
             KillRobot();
 
         }

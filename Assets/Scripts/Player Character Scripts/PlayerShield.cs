@@ -38,12 +38,12 @@ public class PlayerShield : MonoBehaviour {
 	void Update () {
 		
 	}
-
+    //Checks if Enemy or Enemy Bullet is Colliding with the shield.
     void OnCollisionEnter2D(Collision2D collider)
     {
         if(collider.gameObject.tag == "EnemyBullet")
         {
-            shieldCapacity -= 20;
+            shieldCapacity -= 10;
             if (shieldCapacity <= 0)
             {
                 DestroyShield();

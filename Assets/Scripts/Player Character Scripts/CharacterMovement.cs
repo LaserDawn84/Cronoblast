@@ -29,19 +29,19 @@ public class CharacterMovement : MonoBehaviour
 
     //Collapsed (Press the + Button to Expand)
     #region Player_Stat_Variables
-    public int powerResourceValue = 100; // the amount of power the player has to begin with
-    public int playerHealth = 1000; // the amount of health the player has. will be displayed as a percentage on the UI/HUD
+    public static int powerResourceValue = 100; // the amount of power the player has to begin with
+    public static int playerHealth = 1000; // the amount of health the player has. will be displayed as a percentage on the UI/HUD
 
-    public int enemiesKilled = 0; //This stores the amount of enemies killed and will be used to dictate which wave the player is on, to then generate harder enemies or more enemies.
+    public static int enemiesKilled = 0; //This stores the amount of enemies killed and will be used to dictate which wave the player is on, to then generate harder enemies or more enemies.
 
-    public int waveNumber = 1; // sets the round number defaulted to wave 1.
+    public static int waveNumber = 1; // sets the round number defaulted to wave 1.
 
     public int difficultyMultiplier { get; private set; } //this is used in tandem with 'enemiesKilled' to dictate the health stats of enemies as waves progress. It will be accessed by the enemy script and used to add to their health. 
 
     [SerializeField]
     float movementSpeed = 4f; //multiplier for the player's speed
 
-    public int points = 0; //points total
+    public static int points = 0; //points total
     int topScore;
     int damageReceivedPerShot = 25;
     #endregion
@@ -288,20 +288,20 @@ public class CharacterMovement : MonoBehaviour
             powerResourceValue -= 75;
             if (powerResourceValue < 0)
             {
-                powerResourceValue += 75;
+                powerResourceValue += 75; //restores to the amount before activator was pressed.
             }
             else
             {
-                Instantiate(explosionEffect, transform.position, transform.rotation, transform);
+                Instantiate(explosionEffect, transform.position, transform.rotation, transform); //create explosion effect
 
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 5.0f);
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 5.0f); // create array of colliders within the overlap circle
                 //for each collider add force.
                 foreach (Collider2D hit in colliders)
                 {
-                    Transform t = hit.GetComponent<Transform>();
-                    Rigidbody2D rigB = hit.GetComponent<Rigidbody2D>();
-                    Vector2 direction = t.transform.position - transform.position;
-                    rigB.AddForce(direction * 40, ForceMode2D.Impulse);
+                    Transform t = hit.GetComponent<Transform>(); //transform of the current selected collider
+                    Rigidbody2D rigB = hit.GetComponent<Rigidbody2D>(); // current rigid body of the collider
+                    Vector2 direction = t.transform.position - transform.position; // direction of force to be applied
+                    rigB.AddForce(direction * 40, ForceMode2D.Impulse); // add force
                 }
             }
         }
