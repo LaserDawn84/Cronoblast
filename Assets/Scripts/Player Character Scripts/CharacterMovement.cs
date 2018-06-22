@@ -21,7 +21,7 @@ public class CharacterMovement : MonoBehaviour
     Vector3 mouseInput = Vector3.zero; // for aiming the gun with the mouse
     Vector3 previousMousePosition = Vector3.zero; //
     Vector3 gamepadController1Input = Vector3.zero; // gamepad for player 1
-    Vector3 gamepadController2Input = Vector3.zero; // second gamepad if there are two players and both are using gamepads (controllers)
+    //Vector3 gamepadController2Input = Vector3.zero; // second gamepad if there are two players and both are using gamepads (controllers)
 
     Vector3 aimInputGamepad1 = Vector3.zero; // for aiming the gun with gamepad 1
     Vector3 aimInputGamepad2 = Vector3.zero; // for aiming the gun with gamepad 2
@@ -42,6 +42,8 @@ public class CharacterMovement : MonoBehaviour
     float movementSpeed = 4f; //multiplier for the player's speed
 
     public int points = 0; //points total
+    int topScore;
+    int damageReceivedPerShot = 25;
     #endregion
 
     //Collapsed (Press the + Button to Expand)
@@ -59,13 +61,15 @@ public class CharacterMovement : MonoBehaviour
     GameObject shield;
     GameObject shieldCopy;
 
+    [SerializeField]
+    GameObject explosionEffect;
+
     Rigidbody2D rigB2D;// players's rigidbody container
     #endregion
 
     //Collapsed (Press the + Button to Expand)
     #region Active_Power_Checks
     public bool isShieldActive = false;
-    public bool isExplosionActive = false;
     public bool isTracerRoundActive = false;
     #endregion
 
@@ -87,8 +91,7 @@ public class CharacterMovement : MonoBehaviour
     void Start()
     {
         previousMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);// stores the starting location of the mouse, will be removed once the settings options are set up.
-
-
+        topScore = PlayerPrefs.GetInt("TOP_SCORE", points);
     }
     /*********************END START*********************************/
 
@@ -102,6 +105,8 @@ public class CharacterMovement : MonoBehaviour
         AimWithMouse(); // sets the input vectors related to the mouse 'mouseInput'
         ShootChecker();// calls the ShootChecker Function which checks if input is supplied.
         TurnOnShieldCheck(); // calls the turn on shield check
+        PhaseChangeOverload(); // calls the phasechangeoverload function
+        
     }
     /*********************END UPDATE*********************************/
 
@@ -156,20 +161,20 @@ public class CharacterMovement : MonoBehaviour
     void AimWithMouse()
     {
         mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition); //sets mouseInput to the current mouse position and uses the camera to convert it to world points. (can be player 1 or 2)
-        if (mouseInput != previousMousePosition)
-        {
-            isUsingMouse = true;
+        //if (mouseInput != previousMousePosition)
+        //{
+            //isUsingMouse = true;
 
-        }
+        //}
 
-        if (mouseInput == previousMousePosition)
-        {
-            isUsingMouse = false;
+       // if (mouseInput == previousMousePosition)
+        //{
+           // isUsingMouse = false;
             // if mouse position is equal to the starting positon of the mouse then player is not using the mouse
             // this is really bad as there will be a position that will cause issues when playing potentially freezing the aim
             //if the user uses that position anytime during gameplay
             
-        }
+        //}
     }
     /*********************END AIM WITH MOUSE*********************************/
 
@@ -229,17 +234,77 @@ public class CharacterMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("ShieldActivator") || Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
         {
-            if(powerResourceValue != 0 || powerResourceValue > 0)
+            powerResourceValue -= 50;
+            if(powerResourceValue < 0)
+            {
+                powerResourceValue += 50;
+            }
+            else
             {
                 if (isShieldActive == false)
                 {
                     shieldCopy = Instantiate(shield, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
                     isShieldActive = true;
-                    
+
                 }
-            }  
+                
+            }
         }
     }
     /*********************END SHIELD CHECK*********************************/
 
+    /*********************PLAYER COLLISION DETECTOR*********************************/
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "EnemyBullet")
+        {
+            playerHealth -= damageReceivedPerShot;
+            if (playerHealth <= 0)
+            {
+                KillPlayer();
+            }
+        }
+    }
+    /*********************END PLAYER COLLISION DETECTOR*********************************/
+
+
+    /*********************PLAYER DEATH SEQUENCE*********************************/
+    void KillPlayer()
+    {
+        Time.timeScale = 0;
+        //START DEATH SCENE MENU
+        if(points > topScore)
+        {
+            PlayerPrefs.SetInt("TOP_SCORE", points);
+        }
+    }
+    /*********************END PLAYER DEATH SEQUENCE*********************************/
+    
+        //Player Explosion Power
+    void PhaseChangeOverload()
+    {
+        if(Input.GetButtonDown("ExplosionActivator") || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            powerResourceValue -= 75;
+            if (powerResourceValue < 0)
+            {
+                powerResourceValue += 75;
+            }
+            else
+            {
+                Instantiate(explosionEffect, transform.position, transform.rotation, transform);
+
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 5.0f);
+                //for each collider add force.
+                foreach (Collider2D hit in colliders)
+                {
+                    Transform t = hit.GetComponent<Transform>();
+                    Rigidbody2D rigB = hit.GetComponent<Rigidbody2D>();
+                    Vector2 direction = t.transform.position - transform.position;
+                    rigB.AddForce(direction * 40, ForceMode2D.Impulse);
+                }
+            }
+        }
+           
+    }
 }

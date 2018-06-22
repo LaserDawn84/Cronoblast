@@ -12,8 +12,7 @@ public class PlayerShield : MonoBehaviour {
     //Collapsed (Press + to Expand)
     #region Shield_Stats
     public int shieldCapacity = 500; // This is the health of the shield
-    int powerCost = 50; // costs half the power resource of The Player if no buffs are applied to the player's Power Resource Pool
-    int collisionDamage = 10; // damage applied to enemies
+    int collisionDamage = 1000; // damage applied to enemies
     #endregion
 
     #region Parent_Scripts
@@ -31,11 +30,7 @@ public class PlayerShield : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (playerMovementScript != null)
-        {
-            playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue = playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue - powerCost; //sets the player's power resource to the new value. (current - cost)
-            Debug.Log(playerMovementScript.GetComponent<CharacterMovement>().powerResourceValue);
-        }
+        
 
     }
 	
@@ -43,4 +38,30 @@ public class PlayerShield : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    void OnCollisionEnter2D(Collision2D collider)
+    {
+        if(collider.gameObject.tag == "EnemyBullet")
+        {
+            shieldCapacity -= 20;
+            if (shieldCapacity <= 0)
+            {
+                DestroyShield();
+            }
+        }
+
+        if(collider.gameObject.tag == "Enemy")
+        {
+            collider.gameObject.GetComponent<Enemy1Walk>().enemyHealth -= collisionDamage;
+            shieldCapacity -= 100;
+            if(shieldCapacity <= 0)
+            {
+                DestroyShield();
+            }
+        }
+    }
+    void DestroyShield()
+    {
+        Destroy(gameObject);
+    }
 }

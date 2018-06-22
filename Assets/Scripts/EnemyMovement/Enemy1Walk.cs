@@ -11,7 +11,7 @@ using UnityEngine;
 public class Enemy1Walk : MonoBehaviour
 {
 
-    bool isCoOp = false;     // check will be used if I add local multiplayer (Co-Op Single Screen).
+    //bool isCoOp = false;     // check will be used if I add local multiplayer (Co-Op Single Screen).
 
     //Collaped (Press the + to Expand)
     #region Position_Vectors
@@ -30,6 +30,8 @@ public class Enemy1Walk : MonoBehaviour
     public int enemyPower = 100; //Power Resource Pool for the Enemy
 
     int bulletDamageReceivedPerShot = 50; // Damage that this enemy Takes
+
+    public static int enemyCount; // counts alive enemies
     #endregion
 
     //Collaped (Press the + to Expand)
@@ -41,11 +43,15 @@ public class Enemy1Walk : MonoBehaviour
     [SerializeField]
     GameObject player1; // stores the player game object
 
-    [SerializeField]
-    GameObject player2; //stores GameObject for Player 2 (for Later Implementation of Co-Op)
+    //[SerializeField]
+    //GameObject player2; //stores GameObject for Player 2 (for Later Implementation of Co-Op)
 
     [SerializeField]
     GameObject gun; // stores the enemy's gun.
+
+    [SerializeField]
+    GameObject bullet; // stores the details of the bullet prefab.
+    GameObject bulletClone;
     #endregion
 
     #region Visual_Effects
@@ -67,13 +73,20 @@ public class Enemy1Walk : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        
+        enemyCount += 1;
     }
 
     // Update is called once per frame
     void Update()
     {
         Movement();
+        ShootCheck();
+        DeathCheck();
+    }
+
+    void LateUpdate()
+    {
+        GunAim();
     }
 
     //Movement For The Enemy
@@ -83,11 +96,6 @@ public class Enemy1Walk : MonoBehaviour
         currentPosition = new Vector3(transform.position.x,transform.position.y,0); // used to calculate magnitude
         player1Position = player1.transform.position;
         rigB2DEnemy.velocity = player1Position.normalized * movementSpeedEnemy;
-
-        if (gun != null)
-        {
-            gun.transform.up = new Vector3(player1.transform.position.x,player1.transform.position.y,0f);
-        }
 
         if(currentPosition.x < 0)
         {
@@ -101,29 +109,55 @@ public class Enemy1Walk : MonoBehaviour
         }
         
     }
+    void GunAim()
+    {
+        if (gun != null)
+        {
+            gun.transform.up = new Vector3(player1.transform.position.x, player1.transform.position.y, 0f);
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Player1Bullet" || collision.gameObject.tag == "Player2Bullet")
         {
             enemyHealth -= bulletDamageReceivedPerShot;
-            if(enemyHealth <= 0)
-            {
-                player1.GetComponent<CharacterMovement>().points += 10;
-                player1.GetComponent<CharacterMovement>().enemiesKilled += 1;
-                KillRobot();
-                
-            }
+            DeathCheck();
         }
     }
+    void DeathCheck()
+    {
+        if (enemyHealth <= 0)
+        {
+            player1.GetComponent<CharacterMovement>().points += 10;
+            player1.GetComponent<CharacterMovement>().enemiesKilled += 1;
+            KillRobot();
+
+        }
+    }
+
     void KillRobot()
     {
         Instantiate(deathExplosionEffect,transform.position,transform.rotation);
+        enemyCount -= 1;
         Destroy(gameObject);
     }
 
    void ShootCheck()
     {
-
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 5.0f); // creates an overlap circle which will then grab all colliders within the circle and store them in an array
+                                                                                       //for each collider add force.
+        foreach (Collider2D hit in colliders)
+        {
+            if(hit.gameObject.tag == "Player1")
+            {
+                Shoot();
+            }
+        }
+    }
+    void Shoot()
+    {
+        bulletClone = Instantiate(bullet, gun.transform.position, gun.transform.rotation, gameObject.transform);// spawns a bullet and sets it as a child of the player.
+        bulletClone.GetComponent<Rigidbody2D>().AddForce(player1.transform.position.normalized * 20f, ForceMode2D.Impulse); // applies force to the bullet in the direction of the aim input.
     }
 }
