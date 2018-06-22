@@ -79,7 +79,7 @@ public class Enemy1Walk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        AttackVariations();
         ShootCheck();
         DeathCheck();
     }
@@ -90,25 +90,44 @@ public class Enemy1Walk : MonoBehaviour
     }
 
     //Movement For The Enemy
-    void Movement()
+    void AttackVariations()
     {
+        if(gun == null)
+        {
+            if(shield == null)
+            {
 
-        currentPosition = new Vector3(transform.position.x,transform.position.y,0); // used to calculate magnitude
+            }
+            else
+            {
+                MoveToPlayer();
+            }
+        }
+        else
+        {
+            MoveToPlayer();
+        }
+        
+        
+    }
+    void MoveToPlayer()
+    {
+        currentPosition = new Vector3(transform.position.x, transform.position.y, 0); // used to calculate magnitude
         player1Position = player1.transform.position;
         rigB2DEnemy.velocity = player1Position.normalized * movementSpeedEnemy;
 
-        if(currentPosition.x < 0)
+        if (currentPosition.x < 0)
         {
             spriteRenderer.flipX = true; // if less than zero, then set flipX to true thus showing left walk.
-            
+
         }
         else if (currentPosition.x > 0)
         {
             spriteRenderer.flipX = false; // if zero or greater than zero, then set flipX to false thus showing right walk.
-            
+
         }
-        
     }
+
     void GunAim()
     {
         if (gun != null)
@@ -145,15 +164,23 @@ public class Enemy1Walk : MonoBehaviour
 
    void ShootCheck()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 5.0f); // creates an overlap circle which will then grab all colliders within the circle and store them in an array
-                                                                                       //for each collider add force.
-        foreach (Collider2D hit in colliders)
-        {
-            if(hit.gameObject.tag == "Player1")
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2.0f); // creates an overlap circle which will then grab all colliders within the circle and store them in an array
+            if(gun == null)
             {
-                Shoot();
+                return;
             }
-        }
+            else
+            {
+            //for each collider in the array add force.
+                foreach (Collider2D hit in colliders)
+                {
+                    if (hit.gameObject.tag == "Player1")
+                    {
+                        Shoot();
+                    }
+                }
+            }
+        
     }
     void Shoot()
     {

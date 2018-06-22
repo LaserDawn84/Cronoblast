@@ -58,8 +58,7 @@ public class CharacterMovement : MonoBehaviour
     GameObject gun; // stores the informaton for the gun gameobject.
 
     [SerializeField]
-    GameObject shield;
-    GameObject shieldCopy;
+    GameObject shield; // stores shield object
 
     [SerializeField]
     GameObject explosionEffect;
@@ -69,7 +68,7 @@ public class CharacterMovement : MonoBehaviour
 
     //Collapsed (Press the + Button to Expand)
     #region Active_Power_Checks
-    public bool isShieldActive = false;
+    public static bool isShieldActive = false;
     public bool isTracerRoundActive = false;
     #endregion
 
@@ -243,7 +242,7 @@ public class CharacterMovement : MonoBehaviour
             {
                 if (isShieldActive == false)
                 {
-                    shieldCopy = Instantiate(shield, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                    Instantiate(shield, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
                     isShieldActive = true;
 
                 }
@@ -298,10 +297,14 @@ public class CharacterMovement : MonoBehaviour
                 //for each collider add force.
                 foreach (Collider2D hit in colliders)
                 {
-                    Transform t = hit.GetComponent<Transform>(); //transform of the current selected collider
-                    Rigidbody2D rigB = hit.GetComponent<Rigidbody2D>(); // current rigid body of the collider
-                    Vector2 direction = t.transform.position - transform.position; // direction of force to be applied
-                    rigB.AddForce(direction * 40, ForceMode2D.Impulse); // add force
+                    if(hit.gameObject.name != "EnemyShield")
+                    {
+                        Transform t = hit.GetComponent<Transform>(); //transform of the current selected collider
+                        Rigidbody2D rigB = hit.GetComponent<Rigidbody2D>(); // current rigid body of the collider
+                        Vector2 direction = t.transform.position - transform.position; // direction of force to be applied
+                        rigB.AddForce(direction * 40, ForceMode2D.Impulse); // add force
+                    }
+                    
                 }
             }
         }

@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - Player1
   - EnemyBullet
+  - EnemyShield
   layers:
   - Default
   - TransparentFX
@@ -63,4 +64,7 @@ TagManager:
     locked: 0
   - name: FrontWall
     uniqueID: 3029335261
+    locked: 0
+  - name: UI
+    uniqueID: 2771093715
     locked: 0

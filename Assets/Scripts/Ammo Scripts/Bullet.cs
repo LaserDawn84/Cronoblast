@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour {
 
     [SerializeField]
     GameObject bulletDestructionEffect;
-    GameObject bulletDestructionEffectCopy;
+   
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour {
 
     void BulletDeath()
     {
-        bulletDestructionEffectCopy = Instantiate(bulletDestructionEffect, gameObject.transform.position, gameObject.transform.rotation);
+        Instantiate(bulletDestructionEffect, gameObject.transform.position, gameObject.transform.rotation);
         Destroy(gameObject);
     }
 }

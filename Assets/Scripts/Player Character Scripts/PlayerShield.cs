@@ -17,7 +17,7 @@ public class PlayerShield : MonoBehaviour {
 
     #region Parent_Scripts
         [SerializeField]
-        GameObject playerMovementScript; //stores the game object that has the "Character Movement" script attached.
+        GameObject player; //stores the game object that has the "Character Movement" script attached.
     #endregion
 
     bool isActive;
@@ -62,6 +62,7 @@ public class PlayerShield : MonoBehaviour {
     }
     void DestroyShield()
     {
+        CharacterMovement.isShieldActive = false;
         Destroy(gameObject);
     }
 }

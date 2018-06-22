@@ -3,7 +3,13 @@ guid: 9055bacccf1b9bd4cafcdba5d7fc4422
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player1: {fileID: 1989252939331602, guid: 1aaaecf76a4bb264d981f0a989f10be0, type: 2}
+  - gun: {fileID: 1102805546592202, guid: 2e61651b8e361f0449fd5cf0b7da4cfe, type: 2}
+  - bullet: {fileID: 1405667885754300, guid: 305ff5b521813b84f87b18be83dd5d31, type: 2}
+  - deathExplosionEffect: {fileID: 1865987644507430, guid: 04d9e1327dad7bf46b0b58fb7aa3cc68,
+      type: 2}
+  - shield: {fileID: 1730414534732400, guid: 9f8698e684639ea4e8f47a3eeacb32a0, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

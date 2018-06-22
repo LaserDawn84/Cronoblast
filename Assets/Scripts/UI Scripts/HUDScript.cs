@@ -14,11 +14,17 @@ public class HUDScript : MonoBehaviour
     void Start()
     {
         topScore = PlayerPrefs.GetInt("TOP_SCORE", 0);
+        topScoreText.text = "Top Score: " + topScore;
+        healthText.text = "Health: " + CharacterMovement.playerHealth;
+        pointText.text = "Score: " + "0";
+        powerText.text = "Power: " + CharacterMovement.powerResourceValue;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        healthText.text = "Health: " + CharacterMovement.playerHealth;
+        pointText.text = "Score: " + CharacterMovement.points;
+        powerText.text = "Power: " + CharacterMovement.powerResourceValue;
     }
 }

@@ -97,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1264655441247934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.76, y: 2.91, z: 0}
+  m_LocalPosition: {x: 6.3, y: 2.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4776142843686854}
@@ -197,7 +197,7 @@ MonoBehaviour:
   movementSpeedEnemy: 3
   enemyHealth: 1000
   enemyPower: 100
-  player1: {fileID: 0}
+  player1: {fileID: 1989252939331602, guid: 1aaaecf76a4bb264d981f0a989f10be0, type: 2}
   gun: {fileID: 1879426952104522}
   bullet: {fileID: 1405667885754300, guid: 305ff5b521813b84f87b18be83dd5d31, type: 2}
   deathExplosionEffect: {fileID: 1865987644507430, guid: 04d9e1327dad7bf46b0b58fb7aa3cc68,

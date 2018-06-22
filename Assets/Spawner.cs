@@ -27,11 +27,16 @@ public class Spawner : MonoBehaviour {
             int i = 0;
             foreach (GameObject spawnPoint in spawnPoints)
             {
-                if(i <= enemyArray.Length)
+                if(i < enemyArray.Length)
                 {
                     Instantiate(enemyArray[i], spawnPoint.transform.position,spawnPoint.transform.rotation);
                     i++;
                 }
+                else
+                {
+                    i = 0;
+                }
+                
                 
             }
         }
