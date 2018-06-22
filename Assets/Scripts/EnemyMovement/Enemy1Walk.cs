@@ -28,6 +28,8 @@ public class Enemy1Walk : MonoBehaviour
     public int enemyHealth = 1000; //Health of the Enemy
 
     public int enemyPower = 100; //Power Resource Pool for the Enemy
+
+    int bulletDamageReceivedPerShot = 250; // Damage that this enemy Takes
     #endregion
 
     //Collaped (Press the + to Expand)
@@ -44,6 +46,14 @@ public class Enemy1Walk : MonoBehaviour
 
     [SerializeField]
     GameObject gun; // stores the enemy's gun.
+    #endregion
+
+    #region Visual_Effects
+    [SerializeField]
+    GameObject deathExplosionEffect;
+
+    [SerializeField]
+    GameObject shield;
     #endregion
 
 
@@ -85,5 +95,22 @@ public class Enemy1Walk : MonoBehaviour
             
         }
         
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player1Bullet" || collision.gameObject.tag == "Player2Bullet")
+        {
+            enemyHealth -= bulletDamageReceivedPerShot;
+            if(enemyHealth <= 0)
+            {
+                KillRobot();
+            }
+        }
+    }
+    void KillRobot()
+    {
+        Instantiate(deathExplosionEffect,transform.position,transform.rotation);
+        Destroy(gameObject);
     }
 }
