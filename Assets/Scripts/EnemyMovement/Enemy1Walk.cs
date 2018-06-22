@@ -15,9 +15,9 @@ public class Enemy1Walk : MonoBehaviour
 
     //Collaped (Press the + to Expand)
     #region Position_Vectors
-    Vector2 currentPosition; //A vector 2 to store current position
-    Vector2 player2Position; //Will Sort this out if time to add multiplayer is sufficient             
-    Vector2 player1Position; // Store the player's position. Will be using this with 'currentPosition' to calculate the direction in which the enemy must move.
+    Vector3 currentPosition; //A vector 2 to store current position
+    Vector3 player2Position; //Will Sort this out if time to add multiplayer is sufficient             
+    Vector3 player1Position; // Store the player's position. Will be using this with 'currentPosition' to calculate the direction in which the enemy must move.
     #endregion
 
     //Collaped (Press the + to Expand)
@@ -29,7 +29,7 @@ public class Enemy1Walk : MonoBehaviour
 
     public int enemyPower = 100; //Power Resource Pool for the Enemy
 
-    int bulletDamageReceivedPerShot = 250; // Damage that this enemy Takes
+    int bulletDamageReceivedPerShot = 50; // Damage that this enemy Takes
     #endregion
 
     //Collaped (Press the + to Expand)
@@ -39,7 +39,7 @@ public class Enemy1Walk : MonoBehaviour
     SpriteRenderer spriteRenderer; //stores the sprite renderer
 
     [SerializeField]
-    GameObject player; // stores the player game object
+    GameObject player1; // stores the player game object
 
     [SerializeField]
     GameObject player2; //stores GameObject for Player 2 (for Later Implementation of Co-Op)
@@ -80,9 +80,14 @@ public class Enemy1Walk : MonoBehaviour
     void Movement()
     {
 
-        currentPosition = new Vector2(transform.position.x,transform.position.y); // used to calculate magnitude
-        player1Position = player.transform.position;
-        rigB2DEnemy.velocity = movementSpeedEnemy * (currentPosition - player1Position).normalized; 
+        currentPosition = new Vector3(transform.position.x,transform.position.y,0); // used to calculate magnitude
+        player1Position = player1.transform.position;
+        rigB2DEnemy.velocity = player1Position.normalized * movementSpeedEnemy;
+
+        if (gun != null)
+        {
+            gun.transform.up = new Vector3(player1.transform.position.x,player1.transform.position.y,0f);
+        }
 
         if(currentPosition.x < 0)
         {
@@ -104,7 +109,10 @@ public class Enemy1Walk : MonoBehaviour
             enemyHealth -= bulletDamageReceivedPerShot;
             if(enemyHealth <= 0)
             {
+                player1.GetComponent<CharacterMovement>().points += 10;
+                player1.GetComponent<CharacterMovement>().enemiesKilled += 1;
                 KillRobot();
+                
             }
         }
     }
@@ -112,5 +120,10 @@ public class Enemy1Walk : MonoBehaviour
     {
         Instantiate(deathExplosionEffect,transform.position,transform.rotation);
         Destroy(gameObject);
+    }
+
+   void ShootCheck()
+    {
+
     }
 }

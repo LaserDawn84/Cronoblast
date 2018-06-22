@@ -18,7 +18,7 @@ public class PlayerShield : MonoBehaviour {
 
     #region Parent_Scripts
         [SerializeField]
-        GameObject playerMovementScript; //Player's MovementScript
+        GameObject playerMovementScript; //stores the game object that has the "Character Movement" script attached.
     #endregion
 
     bool isActive;

@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Player1Shield
   - Player2Bullet
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Player
   - PlayerBullet
   - PlayerShield
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -49,14 +50,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Gun
-    uniqueID: 865610939
-    locked: 0
   - name: Shield
     uniqueID: 1895336969
     locked: 0
   - name: Bullets
     uniqueID: 2710605433
+    locked: 0
+  - name: Gun
+    uniqueID: 865610939
     locked: 0
   - name: FrontWall
     uniqueID: 3029335261

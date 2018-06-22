@@ -32,8 +32,7 @@ public class CharacterMovement : MonoBehaviour
     public int powerResourceValue = 100; // the amount of power the player has to begin with
     public int playerHealth = 1000; // the amount of health the player has. will be displayed as a percentage on the UI/HUD
 
-    [SerializeField]
-    int enemiesKilled = 0; //This stores the amount of enemies killed and will be used to dictate which wave the player is on, to then generate harder enemies or more enemies.
+    public int enemiesKilled = 0; //This stores the amount of enemies killed and will be used to dictate which wave the player is on, to then generate harder enemies or more enemies.
 
     public int waveNumber = 1; // sets the round number defaulted to wave 1.
 
@@ -41,6 +40,8 @@ public class CharacterMovement : MonoBehaviour
 
     [SerializeField]
     float movementSpeed = 4f; //multiplier for the player's speed
+
+    public int points = 0; //points total
     #endregion
 
     //Collapsed (Press the + Button to Expand)
@@ -58,7 +59,7 @@ public class CharacterMovement : MonoBehaviour
     GameObject shield;
     GameObject shieldCopy;
 
-    Rigidbody2D rigB2D;// players rigidbody container
+    Rigidbody2D rigB2D;// players's rigidbody container
     #endregion
 
     //Collapsed (Press the + Button to Expand)
@@ -167,7 +168,7 @@ public class CharacterMovement : MonoBehaviour
             // if mouse position is equal to the starting positon of the mouse then player is not using the mouse
             // this is really bad as there will be a position that will cause issues when playing potentially freezing the aim
             //if the user uses that position anytime during gameplay
-            //I will be using a settings file anyway so this is only temporary.
+            
         }
     }
     /*********************END AIM WITH MOUSE*********************************/
